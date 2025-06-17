@@ -1,7 +1,39 @@
 import { Button, Form, Input, message } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { LoginUser } from '../../apicalls/user';
 
 function Login () {
+    const navigate = useNavigate();
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const onFinish = async (values) => {
+        try{
+            console.log('login submitted', values)
+            const res = await LoginUser(values)
+            if (res.success) {
+                messageApi.open({
+                type: "success",
+                content: res.message,
+                });
+                console.log('token from response', res.data)
+                localStorage.setItem("token", res.data)
+                console.log('login from client')
+                navigate("/");
+            } 
+            else {
+                messageApi.open({
+                type: "error",
+                content: res.message,
+                });
+            }
+        } catch (err) {
+                messageApi.open({
+                type: "error",
+                content: err,
+                });
+            }
+        }
+
     return <>
         <div>
             <header className="App-header">
@@ -11,7 +43,7 @@ function Login () {
                     </section>
 
                     <section className="right-section">
-                        <Form>
+                        <Form layout="vertical" onFinish={onFinish}>
                             <Form.Item
                                 label="Email"
                                 htmlFor='email'

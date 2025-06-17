@@ -1,22 +1,33 @@
 import { Button, Form, Input, message, Radio } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate  } from 'react-router-dom'
 import { RegisterUser } from '../../apicalls/user'
 
 function Register () {
+    const navigate = useNavigate();
+    const [messageApi, contextHolder] = message.useMessage();
+
     const onFinish = async (values) => {
         try{
             console.log('doooo', values)
             const res = await RegisterUser(values)
-            if (res.success){
-                message.success(res.message)
-            }
-            else{
-                message.error(res.message)
-            }
-        }
-        catch(e){
-            message.error(e.message)
-        }
+            if (res.success) {
+        messageApi.open({
+          type: "success",
+          content: res.message,
+        });
+        navigate("/");
+      } else {
+        messageApi.open({
+          type: "error",
+          content: res.message,
+        });
+      }
+    } catch (err) {
+      messageApi.open({
+        type: "error",
+        content: err,
+      });
+    }
     }
     return <>
         <div>
