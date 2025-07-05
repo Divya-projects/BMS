@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
 import { Button, Form, Input } from "antd";
-import { Link, useNavigate } from "react-router-dom";
-import { ForgetPassword } from "../../apicalls/user";
+import { useNavigate } from "react-router-dom";
+import { ResetPassword } from "../../apicalls/user";
 import { message } from "antd";
 
-function Forget() {
+function Reset() {
   const onFinish = async (values) => {
-    console.log('from forget pw',values);
     try {
-      const response = await ForgetPassword(values);
+      const response = await ResetPassword(values);
       if (response.success) {
         message.success(response.message);
-        alert("OTP sent to your email");
-        window.location.href = "/reset";
+        window.location.href = "/login";
       } else {
         message.error(response.message);
       }
@@ -31,24 +29,37 @@ function Forget() {
       <header className="App-header">
         <main className="main-area mw-500 text-center px-3">
           <section className="left-section">
-            <h1>Forget Password</h1>
+            <h1>Reset Password</h1>
           </section>
           <section className="right-section">
             <Form layout="vertical" onFinish={onFinish}>
               <Form.Item
-                label="Email"
-                htmlFor="email"
-                name="email"
+                label="OTP"
+                htmlFor="otp"
+                name="otp"
                 className="d-block"
-                rules={[{ required: true, message: "Email is required" }]}
+                rules={[{ required: true, message: "OTP is required" }]}
               >
                 <Input
-                  id="email"
-                  type="text"
-                  placeholder="Enter your Email"
+                  id="otp"
+                  type="number"
+                  placeholder="Enter your otp"
                 ></Input>
               </Form.Item>
 
+              <Form.Item
+                label="Password"
+                htmlFor="password"
+                name="password"
+                className="d-block"
+                rules={[{ required: true, message: "Password is required" }]}
+              >
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Enter your Password"
+                ></Input>
+              </Form.Item>
               <Form.Item className="d-block">
                 <Button
                   type="primary"
@@ -56,15 +67,10 @@ function Forget() {
                   htmlType="submit"
                   style={{ fontSize: "1rem", fontWeight: "600" }}
                 >
-                  SEND OTP
+                  RESET PASSWORD
                 </Button>
               </Form.Item>
             </Form>
-            <div>
-              <p>
-                Existing User? <Link to="/login">Login Here</Link>
-              </p>
-            </div>
           </section>
         </main>
       </header>
@@ -72,4 +78,4 @@ function Forget() {
   );
 }
 
-export default Forget;
+export default Reset;
