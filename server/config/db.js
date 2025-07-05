@@ -6,7 +6,9 @@ console.log('fjdfffffffddddddddd')
 mongoose.connect(
     process.env.mongo_url,
     {}
-)
+).then(() => console.log("db got connected"))
+.catch((err) => console.error("db connection err", err))
+
 console.log('mongoooo', process.env.mongo_url)
 
 const connection = mongoose.connection;
