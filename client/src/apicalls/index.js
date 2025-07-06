@@ -3,7 +3,8 @@ import axios from 'axios'
 const token = localStorage.getItem("token")
 
 export const axiosInstance = axios.create({
-    baseURL: "http://localhost:8082",
+    // baseURL: "http://localhost:8082",
+    baseURL: "https://bms-zwpx.onrender.com/",
     headers: {
         withCredentials: true,
         "Content-Type": "application/json",
